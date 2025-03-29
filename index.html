@@ -7,39 +7,66 @@
     <style>
         /* Estilos gerais */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #f4f4f4;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
         .quiz-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 50px auto;
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 20px;
         }
         .question {
-            font-size: 20px;
+            font-size: 1.5rem;
             margin-bottom: 20px;
         }
         .option {
             display: block;
             width: 100%;
-            padding: 10px;
-            margin: 5px 0;
+            padding: 15px;
+            margin: 10px 0;
             background: #3498db;
             color: white;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 10px;
+            transition: background 0.3s, transform 0.2s;
+            font-size: 1rem;
         }
         .option:hover {
             background: #2980b9;
+            transform: scale(1.02);
         }
         .hidden {
             display: none;
+        }
+        #result {
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        #next-button {
+            padding: 10px 20px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        #next-button:hover {
+            background: #27ae60;
         }
     </style>
 </head>
@@ -62,133 +89,24 @@
         let questions = [
             { question: "Qual a porta do protocolo HTTP?", options: ["80", "443", "21", "25"], answer: 0 },
             { question: "Qual a função do protocolo DNS?", options: ["Resolver nomes de domínio", "Transferência de arquivos", "Acesso remoto", "Envio de e-mails"], answer: 0 },
-            { question: "Qual protocolo é usado para envio de e-mails?", options: ["FTP", "SMTP", "DNS", "HTTP"], answer: 1 },
-            { question: "Qual protocolo usa a porta 443?", options: ["HTTP", "HTTPS", "FTP", "SNMP"], answer: 1 },
-            { question: "Qual protocolo usa a porta 22?", options: ["FTP", "Telnet", "SSH", "SMTP"], answer: 2 },
-            { question: "Qual protocolo é usado para acessar servidores de forma segura?", options: ["SSH", "Telnet", "HTTP", "POP3"], answer: 0 },
-            { question: "Qual a função do protocolo DHCP?", options: ["Atribuir IPs automaticamente", "Monitoramento de rede", "Transferência de arquivos", "Sincronização de tempo"], answer: 0 },
-            { question: "Qual protocolo é usado para transferência de arquivos?", options: ["FTP", "SMTP", "DNS", "SNMP"], answer: 0 },
-            { question: "Qual protocolo é usado para monitoramento de rede?", options: ["SNMP", "IMAP", "SSL", "DHCP"], answer: 0 },
-            { question: "Qual a função do protocolo RDP?", options: ["Acesso remoto a desktops", "Transferência de e-mails", "Resolução de nomes", "Criptografia de dados"], answer: 0 },
-            { question: "Qual a função do protocolo ARP?", options: ["Resolver endereços IP para MAC", "Transferir arquivos", "Atribuir IPs automaticamente", "Monitorar dispositivos de rede"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo Telnet?", options: ["23", "22", "80", "443"], answer: 0 },
-            { question: "Qual a principal diferença entre HTTP e HTTPS?", options: ["HTTPS usa criptografia", "HTTP é mais rápido", "HTTPS não usa portas", "HTTP é mais seguro"], answer: 0 },
-            { question: "Qual protocolo é usado para sincronização de tempo?", options: ["NTP", "FTP", "SMTP", "SNMP"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo NTP?", options: ["123", "80", "443", "25"], answer: 0 },
-            { question: "Qual a função do protocolo ICMP?", options: ["Diagnóstico de rede", "Transferência de arquivos", "Atribuição de IPs", "Criptografia de dados"], answer: 0 },
-            { question: "Qual protocolo é usado para envio de mensagens de erro na rede?", options: ["ICMP", "TCP", "UDP", "DNS"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo POP3?", options: ["110", "25", "143", "443"], answer: 0 },
-            { question: "Qual a função do protocolo POP3?", options: ["Receber e-mails", "Enviar e-mails", "Transferir arquivos", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre POP3 e IMAP?", options: ["IMAP permite acesso remoto aos e-mails", "POP3 é mais seguro", "POP3 usa criptografia", "IMAP não suporta pastas"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo IMAP?", options: ["143", "110", "25", "443"], answer: 0 },
-            { question: "Qual protocolo é usado para gerenciar redes locais?", options: ["SNMP", "DHCP", "FTP", "SMTP"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo SNMP?", options: ["161", "162", "80", "443"], answer: 0 },
-            { question: "Qual a função do protocolo TFTP?", options: ["Transferir arquivos simples", "Enviar e-mails", "Atribuir IPs", "Monitorar redes"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo TFTP?", options: ["69", "21", "80", "443"], answer: 0 },
-            { question: "Qual a diferença entre FTP e TFTP?", options: ["TFTP é mais simples e não usa autenticação", "FTP é mais rápido", "TFTP usa criptografia", "FTP não suporta transferência de arquivos grandes"], answer: 0 },
-            { question: "Qual protocolo é usado para acesso remoto não seguro?", options: ["Telnet", "SSH", "RDP", "FTP"], answer: 0 },
-            { question: "Qual a principal função do protocolo BGP?", options: ["Troca de informações de roteamento entre redes", "Atribuir IPs", "Transferir arquivos", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a função do protocolo OSPF?", options: ["Roteamento dinâmico em redes IP", "Transferência de arquivos", "Atribuição de IPs", "Criptografia de dados"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo LDAP?", options: ["389", "636", "80", "443"], answer: 0 },
-            { question: "Qual a função do protocolo LDAP?", options: ["Gerenciar diretórios de rede", "Transferir arquivos", "Enviar e-mails", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre LDAP e LDAPS?", options: ["LDAPS usa criptografia SSL/TLS", "LDAP é mais rápido", "LDAPS não suporta autenticação", "LDAP é mais seguro"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo LDAPS?", options: ["636", "389", "80", "443"], answer: 0 },
-            { question: "Qual protocolo é usado para comunicação em redes multicast?", options: ["IGMP", "TCP", "UDP", "SNMP"], answer: 0 },
-            { question: "Qual a função do protocolo IGMP?", options: ["Gerenciar grupos multicast", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo SIP?", options: ["5060", "5061", "80", "443"], answer: 0 },
-            { question: "Qual a função do protocolo SIP?", options: ["Estabelecer chamadas VoIP", "Transferir arquivos", "Enviar e-mails", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre SIP e RTP?", options: ["SIP estabelece a conexão, RTP transfere os dados", "RTP é mais seguro", "SIP usa criptografia", "RTP não suporta áudio"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo RTP?", options: ["5004", "5005", "80", "443"], answer: 0 },
-            { question: "Qual a função do protocolo RTP?", options: ["Transferir dados de áudio e vídeo", "Enviar e-mails", "Transferir arquivos", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a função do protocolo MPLS?", options: ["Encaminhamento eficiente de pacotes", "Transferência de arquivos", "Atribuição de IPs", "Monitoramento de dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo HTTPS?", options: ["443", "80", "22", "25"], answer: 0 },
-            { question: "Qual a principal função do protocolo GRE?", options: ["Encapsular pacotes para túneis", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo SMTP?", options: ["25", "587", "110", "143"], answer: 0 },
-            { question: "Qual a função do protocolo SMTP?", options: ["Envio de e-mails", "Recebimento de e-mails", "Transferência de arquivos", "Monitoramento de dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre SMTP e IMAP?", options: ["SMTP envia e-mails, IMAP gerencia recebimento", "SMTP é mais seguro", "IMAP usa criptografia", "SMTP não suporta pastas"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo IMAP com SSL?", options: ["993", "143", "110", "25"], answer: 0 },
-            { question: "Qual a função do protocolo PPP?", options: ["Estabelecer conexões ponto-a-ponto", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a principal aplicação do protocolo L2TP?", options: ["Criação de túneis VPN", "Transferência de arquivos", "Atribuição de IPs", "Monitoramento de dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo L2TP?", options: ["1701", "443", "80", "25"], answer: 0 },
-            { question: "Qual a função do protocolo EIGRP?", options: ["Roteamento dinâmico em redes", "Transferência de arquivos", "Atribuição de IPs", "Monitoramento de dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre OSPF e EIGRP?", options: ["OSPF é baseado em estado de enlace, EIGRP é híbrido", "EIGRP é mais rápido", "OSPF usa criptografia", "EIGRP não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo VRRP?", options: ["Prover redundância de roteadores", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo VRRP?", options: ["112", "80", "443", "25"], answer: 0 },
-            { question: "Qual a função do protocolo HSRP?", options: ["Prover alta disponibilidade de roteadores", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre HSRP e VRRP?", options: ["HSRP é proprietário da Cisco, VRRP é padrão aberto", "VRRP é mais rápido", "HSRP usa criptografia", "VRRP não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo STP?", options: ["Evitar loops em redes Ethernet", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre STP e RSTP?", options: ["RSTP é uma versão mais rápida do STP", "STP é mais seguro", "RSTP usa criptografia", "STP não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo LLDP?", options: ["Descobrir dispositivos vizinhos na rede", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo LLDP?", options: ["Nenhuma, opera na camada de enlace", "80", "443", "25"], answer: 0 },
-            { question: "Qual a função do protocolo IS-IS?", options: ["Roteamento dinâmico em redes", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre IS-IS e OSPF?", options: ["IS-IS é independente de IP, OSPF é específico para IP", "OSPF é mais rápido", "IS-IS usa criptografia", "OSPF não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo VXLAN?", options: ["Criar redes virtuais sobrepostas", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo VXLAN?", options: ["4789", "80", "443", "25"], answer: 0 },
-            { question: "Qual a função do protocolo NetFlow?", options: ["Monitorar tráfego de rede", "Transferir arquivos", "Atribuir IPs", "Gerenciar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre NetFlow e SNMP?", options: ["NetFlow coleta dados de tráfego, SNMP gerencia dispositivos", "SNMP é mais rápido", "NetFlow usa criptografia", "SNMP não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo OpenFlow?", options: ["Controlar switches em redes SDN", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a diferença entre OpenFlow e NetFlow?", options: ["OpenFlow controla dispositivos, NetFlow coleta dados", "NetFlow é mais rápido", "OpenFlow usa criptografia", "NetFlow não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo RADIUS?", options: ["Autenticação e autorização de usuários", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo RADIUS?", options: ["1812", "80", "443", "25"], answer: 0 },
-            { question: "Qual a diferença entre RADIUS e TACACS+?", options: ["RADIUS é mais usado para autenticação de rede, TACACS+ para dispositivos", "TACACS+ é mais rápido", "RADIUS usa criptografia", "TACACS+ não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo Kerberos?", options: ["Autenticação segura em redes", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo Kerberos?", options: ["88", "80", "443", "25"], answer: 0 },
-            { question: "Qual a diferença entre Kerberos e LDAP?", options: ["Kerberos autentica, LDAP gerencia diretórios", "LDAP é mais rápido", "Kerberos usa criptografia", "LDAP não suporta redes grandes"], answer: 0 },
-            { question: "Qual a função do protocolo SFTP?", options: ["Transferir arquivos com segurança", "Enviar e-mails", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
-            { question: "Qual a porta padrão do protocolo SFTP?", options: ["22", "21", "80", "443"], answer: 0 },
-            { question: "Qual a diferença entre SFTP e FTP?", options: ["SFTP usa criptografia, FTP não", "FTP é mais rápido", "SFTP não suporta arquivos grandes", "FTP é mais seguro"], answer: 0 },
-            { question: "O protocolo TCP é orientado à conexão.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo UDP é mais confiável que o TCP.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo DNS resolve nomes de domínio para endereços IP.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo POP3 é usado para envio de e-mails.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo IMAP permite acessar e-mails diretamente no servidor.", options: ["Verdadeiro", "Falso"], answer: 0 },
+            { question: "Qual a sigla do protocolo FTP?", options: ["File Transfer Protocol", "Fast Transfer Protocol", "File Transport Protocol", "File Tracking Protocol"], answer: 0 },
+            { question: "Qual a diferença entre HTTP e HTTPS?", options: ["HTTPS usa criptografia", "HTTP é mais rápido", "HTTPS não usa portas", "HTTP é mais seguro"], answer: 0 },
             { question: "O protocolo SMTP é usado para envio de e-mails.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SNMP é usado para monitoramento de dispositivos de rede.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo FTP é usado para transferência de arquivos.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo NTP é usado para sincronização de tempo em redes.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo HTTP é mais seguro que o HTTPS.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo HTTPS utiliza criptografia SSL/TLS.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SSH é usado para acesso remoto seguro.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo Telnet é mais seguro que o SSH.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo IRC é usado para comunicação em tempo real.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo BOOTP é usado para atribuir endereços IP automaticamente.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo RDP é usado para acesso remoto a desktops.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo DNS usa a porta 53.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo FTP usa a porta 21 para controle.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SMTP usa a porta 25 por padrão.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo HTTPS usa a porta 443.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo Telnet usa a porta 23.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SSH usa a porta 22.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SNMP usa a porta 161.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo NTP usa a porta 123.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo RDP usa a porta 3389.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo IMAP usa a porta 143.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo POP3 usa a porta 110.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo HTTP usa a porta 80.", options: ["Verdadeiro", "Falso"], answer: 0 },
+            { question: "Qual a função do protocolo SNMP?", options: ["Monitorar dispositivos de rede", "Transferir arquivos", "Atribuir IPs", "Sincronizar tempo"], answer: 0 },
+            { question: "Qual a sigla do protocolo SSH?", options: ["Secure Shell", "Secure Hypertext", "Secure Host", "Secure Socket"], answer: 0 },
             { question: "O protocolo UDP é orientado à conexão.", options: ["Verdadeiro", "Falso"], answer: 1 },
+            { question: "Qual a porta padrão do protocolo Telnet?", options: ["23", "22", "80", "443"], answer: 0 },
+            { question: "Qual a diferença entre POP3 e IMAP?", options: ["IMAP permite acesso remoto aos e-mails", "POP3 é mais seguro", "POP3 usa criptografia", "IMAP não suporta pastas"], answer: 0 },
+            { question: "O protocolo HTTPS utiliza criptografia SSL/TLS.", options: ["Verdadeiro", "Falso"], answer: 0 },
+            { question: "Qual a função do protocolo BOOTP?", options: ["Atribuir endereços IP automaticamente", "Transferir arquivos", "Monitorar dispositivos", "Sincronizar tempo"], answer: 0 },
+            { question: "Qual a sigla do protocolo DNS?", options: ["Domain Name System", "Domain Network Service", "Data Name System", "Data Network Service"], answer: 0 },
+            { question: "O protocolo RDP é usado para acesso remoto a desktops.", options: ["Verdadeiro", "Falso"], answer: 0 },
+            { question: "Qual a porta padrão do protocolo HTTPS?", options: ["443", "80", "22", "25"], answer: 0 },
+            { question: "Qual a função do protocolo NTP?", options: ["Sincronizar o tempo em redes", "Transferir arquivos", "Atribuir IPs", "Monitorar dispositivos"], answer: 0 },
             { question: "O protocolo TCP garante entrega ordenada de pacotes.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo DNS usa UDP por padrão.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo HTTPS é mais rápido que o HTTP.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo BOOTP é mais antigo que o DHCP.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo IRC usa a porta 194.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SNMP é usado para transferência de arquivos.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo SMTP pode usar a porta 587 para envio seguro.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo FTP pode operar no modo ativo ou passivo.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo NTP é usado para monitoramento de dispositivos.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo SSH é usado para transferência de arquivos com segurança.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo Telnet não utiliza criptografia.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo DNS pode usar TCP em algumas situações.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo POP3 permite sincronização de e-mails em múltiplos dispositivos.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo IMAP permite gerenciar pastas de e-mails no servidor.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo SNMP usa a porta 162 para traps.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo HTTP é usado para comunicação entre navegadores e servidores web.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo HTTPS é obrigatório para sites com certificados SSL/TLS.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo RDP é usado para transferência de arquivos.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo BOOTP é usado para resolução de nomes de domínio.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo IRC é usado para comunicação em tempo real em redes de chat.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo FTP usa criptografia por padrão.", options: ["Verdadeiro", "Falso"], answer: 1 },
-            { question: "O protocolo SMTP é usado para envio de e-mails entre servidores.", options: ["Verdadeiro", "Falso"], answer: 0 },
-            { question: "O protocolo DNS é usado para traduzir endereços IP em nomes de domínio.", options: ["Verdadeiro", "Falso"], answer: 1 },
+            { question: "Qual a diferença entre TCP e UDP?", options: ["TCP é orientado à conexão, UDP não", "UDP é mais seguro", "TCP não verifica erros, UDP verifica", "UDP é mais confiável"], answer: 0 },
+            { question: "Qual a sigla do protocolo SMTP?", options: ["Simple Mail Transfer Protocol", "Secure Mail Transfer Protocol", "Simple Message Transfer Protocol", "Secure Message Transfer Protocol"], answer: 0 },
+            { question: "O protocolo DNS usa a porta 53.", options: ["Verdadeiro", "Falso"], answer: 0 },
         ];
 
         // Função para embaralhar perguntas
